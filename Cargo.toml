@@ -1,0 +1,19 @@
+# Copyright (c) 2024 Typox Project Contributors
+# Licensed under the MIT License - see LICENSE file for details
+
+[package]
+name = "typox"
+version = "0.1.0"
+edition = "2021"
+description = "Typst package for querying RDF data from Oxigraph stores"
+authors = ["Typox Project Contributors"]
+license = "MIT"
+
+[dependencies]
+oxigraph = "0.4"
+clap = { version = "4.0", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+url = "2.0"
+glob = "0.3"

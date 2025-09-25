@@ -1,0 +1,133 @@
+# Copyright (c) 2024 Typox Project Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.org/people/> .
+
+# Alice - Software Developer
+ex:alice a foaf:Person ;
+    foaf:name "Alice Johnson" ;
+    foaf:givenName "Alice" ;
+    foaf:familyName "Johnson" ;
+    foaf:nick "alice" ;
+    foaf:age "28"^^xsd:int ;
+    foaf:gender "female" ;
+    foaf:mbox <mailto:alice.johnson@example.com> ;
+    foaf:homepage <https://alice-johnson.dev> ;
+    foaf:phone <tel:+1-555-0123> ;
+    foaf:title "Senior Software Developer" ;
+    foaf:workplaceHomepage <https://techcorp.example.com> ;
+    foaf:interest <https://en.wikipedia.org/wiki/Machine_learning> ,
+                  <https://en.wikipedia.org/wiki/Rust_(programming_language)> ;
+    foaf:knows ex:bob , ex:charlie ;
+    rdfs:comment "Experienced developer specializing in systems programming" .
+
+# Bob - Data Scientist
+ex:bob a foaf:Person ;
+    foaf:name "Robert Smith" ;
+    foaf:givenName "Robert" ;
+    foaf:familyName "Smith" ;
+    foaf:nick "bob" ;
+    foaf:age "32"^^xsd:int ;
+    foaf:gender "male" ;
+    foaf:mbox <mailto:robert.smith@example.com> ;
+    foaf:homepage <https://bobsmith.data> ;
+    foaf:phone <tel:+1-555-0456> ;
+    foaf:title "Senior Data Scientist" ;
+    foaf:workplaceHomepage <https://datainsights.example.com> ;
+    foaf:interest <https://en.wikipedia.org/wiki/Data_science> ,
+                  <https://en.wikipedia.org/wiki/Python_(programming_language)> ,
+                  <https://en.wikipedia.org/wiki/Statistics> ;
+    foaf:knows ex:alice , ex:diana ;
+    rdfs:comment "Expert in machine learning and statistical analysis" .
+
+# Charlie - UI/UX Designer
+ex:charlie a foaf:Person ;
+    foaf:name "Charles Brown" ;
+    foaf:givenName "Charles" ;
+    foaf:familyName "Brown" ;
+    foaf:nick "charlie" ;
+    foaf:age "26"^^xsd:int ;
+    foaf:gender "male" ;
+    foaf:mbox <mailto:charles.brown@example.com> ;
+    foaf:homepage <https://charliebrown.design> ;
+    foaf:phone <tel:+1-555-0789> ;
+    foaf:title "UI/UX Designer" ;
+    foaf:workplaceHomepage <https://designstudio.example.com> ;
+    foaf:interest <https://en.wikipedia.org/wiki/User_experience_design> ,
+                  <https://en.wikipedia.org/wiki/Typography> ;
+    foaf:knows ex:alice , ex:diana ;
+    rdfs:comment "Creative designer focused on user-centered design" .
+
+# Diana - Project Manager
+ex:diana a foaf:Person ;
+    foaf:name "Diana Wilson" ;
+    foaf:givenName "Diana" ;
+    foaf:familyName "Wilson" ;
+    foaf:nick "diana" ;
+    foaf:age "35"^^xsd:int ;
+    foaf:gender "female" ;
+    foaf:mbox <mailto:diana.wilson@example.com> ;
+    foaf:homepage <https://dianawilson.pm> ;
+    foaf:phone <tel:+1-555-0321> ;
+    foaf:title "Senior Project Manager" ;
+    foaf:workplaceHomepage <https://agilecorp.example.com> ;
+    foaf:interest <https://en.wikipedia.org/wiki/Agile_software_development> ,
+                  <https://en.wikipedia.org/wiki/Leadership> ;
+    foaf:knows ex:bob , ex:charlie , ex:eve ;
+    rdfs:comment "Agile practitioner with extensive team leadership experience" .
+
+# Eve - DevOps Engineer
+ex:eve a foaf:Person ;
+    foaf:name "Eve Davis" ;
+    foaf:givenName "Eve" ;
+    foaf:familyName "Davis" ;
+    foaf:nick "eve" ;
+    foaf:age "30"^^xsd:int ;
+    foaf:gender "female" ;
+    foaf:mbox <mailto:eve.davis@example.com> ;
+    foaf:homepage <https://evedavis.ops> ;
+    foaf:phone <tel:+1-555-0654> ;
+    foaf:title "DevOps Engineer" ;
+    foaf:workplaceHomepage <https://cloudinfra.example.com> ;
+    foaf:interest <https://en.wikipedia.org/wiki/DevOps> ,
+                  <https://en.wikipedia.org/wiki/Cloud_computing> ,
+                  <https://en.wikipedia.org/wiki/Container_(computing)> ;
+    foaf:knows ex:diana ;
+    rdfs:comment "Infrastructure automation and cloud computing specialist" .
+
+# Frank - Security Engineer
+ex:frank a foaf:Person ;
+    foaf:name "Frank Miller" ;
+    foaf:givenName "Frank" ;
+    foaf:familyName "Miller" ;
+    foaf:nick "frank" ;
+    foaf:age "38"^^xsd:int ;
+    foaf:gender "male" ;
+    foaf:mbox <mailto:frank.miller@example.com> ;
+    foaf:homepage <https://frankmiller.sec> ;
+    foaf:phone <tel:+1-555-0987> ;
+    foaf:title "Senior Security Engineer" ;
+    foaf:workplaceHomepage <https://cybersec.example.com> ;
+    foaf:interest <https://en.wikipedia.org/wiki/Computer_security> ,
+                  <https://en.wikipedia.org/wiki/Cryptography> ;
+    rdfs:comment "Cybersecurity expert specializing in threat analysis" .

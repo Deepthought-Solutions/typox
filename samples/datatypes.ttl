@@ -1,0 +1,163 @@
+# Copyright (c) 2024 Typox Project Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <http://example.org/datatypes/> .
+
+# Numeric Types - Integers
+ex:example-001 a ex:DataExample ;
+    rdfs:label "Integer Examples" ;
+    ex:smallInteger "42"^^xsd:int ;
+    ex:largeInteger "9876543210"^^xsd:long ;
+    ex:shortValue "1000"^^xsd:short ;
+    ex:byteValue "127"^^xsd:byte ;
+    ex:positiveInteger "123456"^^xsd:positiveInteger ;
+    ex:nonNegativeInteger "0"^^xsd:nonNegativeInteger ;
+    ex:unsignedInt "4294967295"^^xsd:unsignedInt ;
+    ex:unsignedLong "18446744073709551615"^^xsd:unsignedLong ;
+    ex:unsignedShort "65535"^^xsd:unsignedShort ;
+    ex:unsignedByte "255"^^xsd:unsignedByte ;
+    rdfs:comment "Examples of various integer datatypes" .
+
+# Numeric Types - Decimals and Floats
+ex:example-002 a ex:DataExample ;
+    rdfs:label "Decimal and Float Examples" ;
+    ex:decimalValue "123.456"^^xsd:decimal ;
+    ex:floatValue "3.14159"^^xsd:float ;
+    ex:doubleValue "2.718281828459045"^^xsd:double ;
+    ex:scientificNotation "1.23e-4"^^xsd:double ;
+    ex:largeDecimal "999999999999999.999999"^^xsd:decimal ;
+    ex:negativeFloat "-273.15"^^xsd:float ;
+    rdfs:comment "Examples of decimal and floating-point datatypes" .
+
+# Boolean Values
+ex:example-003 a ex:DataExample ;
+    rdfs:label "Boolean Examples" ;
+    ex:isActive "true"^^xsd:boolean ;
+    ex:isComplete "false"^^xsd:boolean ;
+    ex:booleanOne "1"^^xsd:boolean ;
+    ex:booleanZero "0"^^xsd:boolean ;
+    rdfs:comment "Examples of boolean values in different representations" .
+
+# Date and Time Types
+ex:example-004 a ex:DataExample ;
+    rdfs:label "Date and Time Examples" ;
+    ex:birthDate "1990-05-15"^^xsd:date ;
+    ex:eventDateTime "2024-09-25T14:30:00Z"^^xsd:dateTime ;
+    ex:localDateTime "2024-09-25T14:30:00"^^xsd:dateTime ;
+    ex:eventTime "14:30:00"^^xsd:time ;
+    ex:duration "P1Y2M3DT4H5M6S"^^xsd:duration ;
+    ex:yearMonth "2024-09"^^xsd:gYearMonth ;
+    ex:year "2024"^^xsd:gYear ;
+    ex:monthDay "--09-25"^^xsd:gMonthDay ;
+    ex:month "--09"^^xsd:gMonth ;
+    ex:day "---25"^^xsd:gDay ;
+    rdfs:comment "Examples of date, time, and duration datatypes" .
+
+# String Types
+ex:example-005 a ex:DataExample ;
+    rdfs:label "String Examples" ;
+    ex:normalString "This is a normal string"^^xsd:string ;
+    ex:normalizedString "This string has normalized whitespace"^^xsd:normalizedString ;
+    ex:token "NoWhitespaceToken"^^xsd:token ;
+    ex:language "en"^^xsd:language ;
+    ex:name "validName123"^^xsd:Name ;
+    ex:ncName "validNCName"^^xsd:NCName ;
+    ex:nmToken "validNMTOKEN123"^^xsd:NMTOKEN ;
+    rdfs:comment "Examples of various string datatypes and restrictions" .
+
+# URI and ID Types
+ex:example-006 a ex:DataExample ;
+    rdfs:label "URI and ID Examples" ;
+    ex:websiteURL "https://example.org/path/to/resource"^^xsd:anyURI ;
+    ex:identifier "ITEM-123-ABC"^^xsd:ID ;
+    ex:reference "ITEM-123-ABC"^^xsd:IDREF ;
+    rdfs:comment "Examples of URI and identifier datatypes" .
+
+# Binary Data
+ex:example-007 a ex:DataExample ;
+    rdfs:label "Binary Data Examples" ;
+    ex:base64Data "SGVsbG8gV29ybGQ="^^xsd:base64Binary ;
+    ex:hexData "48656c6c6f20576f726c64"^^xsd:hexBinary ;
+    rdfs:comment "Examples of binary data encoding" .
+
+# Measurement and Calculation Examples
+ex:measurement-001 a ex:Measurement ;
+    rdfs:label "Temperature Measurements" ;
+    ex:celsius "25.5"^^xsd:decimal ;
+    ex:fahrenheit "77.9"^^xsd:decimal ;
+    ex:kelvin "298.65"^^xsd:decimal ;
+    ex:measurementDate "2024-09-25T10:30:00Z"^^xsd:dateTime ;
+    ex:isValid "true"^^xsd:boolean ;
+    rdfs:comment "Temperature measurements in different units" .
+
+ex:calculation-001 a ex:Calculation ;
+    rdfs:label "Financial Calculations" ;
+    ex:principal "10000.00"^^xsd:decimal ;
+    ex:interestRate "0.05"^^xsd:decimal ;
+    ex:years "10"^^xsd:int ;
+    ex:compoundInterest "16288.95"^^xsd:decimal ;
+    ex:calculationDate "2024-09-25"^^xsd:date ;
+    ex:currency "USD"^^xsd:string ;
+    rdfs:comment "Financial calculation with compound interest" .
+
+# Performance Metrics
+ex:performance-001 a ex:PerformanceMetric ;
+    rdfs:label "System Performance Metrics" ;
+    ex:cpuUsage "45.7"^^xsd:float ;
+    ex:memoryUsage "68.2"^^xsd:float ;
+    ex:diskUsage "23.1"^^xsd:float ;
+    ex:networkLatency "15.3"^^xsd:double ;
+    ex:timestamp "2024-09-25T14:30:15.123Z"^^xsd:dateTime ;
+    ex:sampleCount "1000"^^xsd:int ;
+    ex:isHealthy "true"^^xsd:boolean ;
+    rdfs:comment "System performance metrics at a specific time" .
+
+# Edge Cases and Special Values
+ex:example-008 a ex:DataExample ;
+    rdfs:label "Edge Cases and Special Values" ;
+    ex:emptyString ""^^xsd:string ;
+    ex:zeroInteger "0"^^xsd:int ;
+    ex:zeroDecimal "0.0"^^xsd:decimal ;
+    ex:minDateTime "1000-01-01T00:00:00Z"^^xsd:dateTime ;
+    ex:maxDateTime "9999-12-31T23:59:59Z"^^xsd:dateTime ;
+    ex:veryLongString "This is a very long string that demonstrates how XSD string types can handle extended text content with various characters, numbers 123456789, and symbols !@#$%^&*()."^^xsd:string ;
+    rdfs:comment "Examples of edge cases and special values for various datatypes" .
+
+# Complex Structure with Mixed Types
+ex:user-profile-001 a ex:UserProfile ;
+    rdfs:label "Complete User Profile" ;
+    ex:userId "USER-789"^^xsd:ID ;
+    ex:username "john_doe_2024"^^xsd:token ;
+    ex:email "john.doe@example.com"^^xsd:string ;
+    ex:isActive "true"^^xsd:boolean ;
+    ex:registrationDate "2024-01-15"^^xsd:date ;
+    ex:lastLoginTime "2024-09-25T08:45:30Z"^^xsd:dateTime ;
+    ex:loginCount "247"^^xsd:int ;
+    ex:accountBalance "1542.75"^^xsd:decimal ;
+    ex:profileScore "87.5"^^xsd:float ;
+    ex:preferredLanguage "en-US"^^xsd:language ;
+    ex:biography "Software developer passionate about RDF and semantic web technologies. Enjoys hiking and photography in spare time."^^xsd:string ;
+    ex:website "https://johndoe.dev"^^xsd:anyURI ;
+    ex:birthYear "1985"^^xsd:gYear ;
+    ex:sessionDuration "PT2H30M"^^xsd:duration ;
+    rdfs:comment "Complete user profile demonstrating multiple XSD datatypes in context" .

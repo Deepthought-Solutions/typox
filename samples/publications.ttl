@@ -1,0 +1,172 @@
+# Copyright (c) 2024 Typox Project Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix ex: <http://example.org/publications/> .
+@prefix auth: <http://example.org/authors/> .
+@prefix venue: <http://example.org/venues/> .
+
+# Authors
+auth:alice-chen a foaf:Person ;
+    foaf:name "Dr. Alice Chen" ;
+    foaf:givenName "Alice" ;
+    foaf:familyName "Chen" ;
+    foaf:title "Dr." ;
+    foaf:mbox <mailto:alice.chen@university.edu> ;
+    foaf:workplaceHomepage <https://cs.university.edu> ;
+    rdfs:comment "Associate Professor of Computer Science specializing in distributed systems" .
+
+auth:bob-garcia a foaf:Person ;
+    foaf:name "Prof. Robert Garcia" ;
+    foaf:givenName "Robert" ;
+    foaf:familyName "Garcia" ;
+    foaf:title "Prof." ;
+    foaf:mbox <mailto:r.garcia@tech.edu> ;
+    foaf:workplaceHomepage <https://engineering.tech.edu> ;
+    rdfs:comment "Professor of Software Engineering with focus on formal methods" .
+
+auth:sarah-kim a foaf:Person ;
+    foaf:name "Dr. Sarah Kim" ;
+    foaf:givenName "Sarah" ;
+    foaf:familyName "Kim" ;
+    foaf:title "Dr." ;
+    foaf:mbox <mailto:sarah.kim@research.org> ;
+    foaf:workplaceHomepage <https://research.org> ;
+    rdfs:comment "Senior Research Scientist in machine learning and AI" .
+
+auth:david-wilson a foaf:Person ;
+    foaf:name "David Wilson" ;
+    foaf:givenName "David" ;
+    foaf:familyName "Wilson" ;
+    foaf:mbox <mailto:d.wilson@gradschool.edu> ;
+    foaf:workplaceHomepage <https://gradschool.edu> ;
+    rdfs:comment "PhD Candidate researching cybersecurity and cryptography" .
+
+# Venues
+venue:icse2024 a bibo:Conference ;
+    dc:title "46th International Conference on Software Engineering" ;
+    bibo:shortTitle "ICSE 2024" ;
+    dcterms:date "2024-04-14"^^xsd:date ;
+    bibo:venue "Lisbon, Portugal" ;
+    rdfs:comment "Premier conference in software engineering research" .
+
+venue:nips2023 a bibo:Conference ;
+    dc:title "37th Conference on Neural Information Processing Systems" ;
+    bibo:shortTitle "NeurIPS 2023" ;
+    dcterms:date "2023-12-10"^^xsd:date ;
+    bibo:venue "New Orleans, USA" ;
+    rdfs:comment "Leading conference in machine learning and AI" .
+
+venue:tse-journal a bibo:Journal ;
+    dc:title "IEEE Transactions on Software Engineering" ;
+    bibo:shortTitle "TSE" ;
+    bibo:issn "0098-5589" ;
+    rdfs:comment "Top-tier journal for software engineering research" .
+
+venue:sp2024 a bibo:Conference ;
+    dc:title "IEEE Symposium on Security and Privacy" ;
+    bibo:shortTitle "S&P 2024" ;
+    dcterms:date "2024-05-20"^^xsd:date ;
+    bibo:venue "San Francisco, USA" ;
+    rdfs:comment "Premier conference in computer security and privacy" .
+
+# Publications
+ex:paper-001 a bibo:AcademicArticle ;
+    dc:title "Scalable Consensus Algorithms for Distributed Systems: A Comprehensive Analysis" ;
+    dc:creator auth:alice-chen , auth:bob-garcia ;
+    dcterms:abstract "This paper presents a comprehensive analysis of consensus algorithms in distributed systems, comparing their scalability characteristics under various network conditions and failure scenarios." ;
+    dcterms:issued "2024-04-14"^^xsd:date ;
+    bibo:presentedAt venue:icse2024 ;
+    dc:subject "Distributed Systems" , "Consensus Algorithms" , "Scalability" ;
+    bibo:pageStart "123"^^xsd:int ;
+    bibo:pageEnd "134"^^xsd:int ;
+    bibo:numPages "12"^^xsd:int ;
+    dc:language "en" ;
+    bibo:doi "10.1109/ICSE2024.123456" ;
+    dcterms:bibliographicCitation "Chen, A. and Garcia, R. (2024). Scalable Consensus Algorithms for Distributed Systems: A Comprehensive Analysis. In Proceedings of ICSE 2024, pp. 123-134." .
+
+ex:paper-002 a bibo:AcademicArticle ;
+    dc:title "Deep Learning Approaches for Automated Code Review: An Empirical Study" ;
+    dc:creator auth:sarah-kim , auth:alice-chen ;
+    dcterms:abstract "We present an empirical study evaluating various deep learning architectures for automated code review, analyzing their effectiveness in detecting bugs and suggesting improvements in real-world software projects." ;
+    dcterms:issued "2023-12-10"^^xsd:date ;
+    bibo:presentedAt venue:nips2023 ;
+    dc:subject "Machine Learning" , "Code Review" , "Software Quality" ;
+    bibo:pageStart "2847"^^xsd:int ;
+    bibo:pageEnd "2859"^^xsd:int ;
+    bibo:numPages "13"^^xsd:int ;
+    dc:language "en" ;
+    bibo:doi "10.5555/neurips2023.2847" ;
+    dcterms:bibliographicCitation "Kim, S. and Chen, A. (2023). Deep Learning Approaches for Automated Code Review: An Empirical Study. In Advances in Neural Information Processing Systems 36, pp. 2847-2859." .
+
+ex:paper-003 a bibo:Article ;
+    dc:title "Formal Verification of Memory Safety in Systems Programming Languages" ;
+    dc:creator auth:bob-garcia , auth:david-wilson ;
+    dcterms:abstract "This work introduces novel techniques for formally verifying memory safety properties in systems programming languages, with a focus on Rust's ownership system and its impact on program correctness." ;
+    dcterms:issued "2024-02-15"^^xsd:date ;
+    dcterms:isPartOf venue:tse-journal ;
+    bibo:volume "50"^^xsd:int ;
+    bibo:issue "2"^^xsd:int ;
+    bibo:pageStart "145"^^xsd:int ;
+    bibo:pageEnd "162"^^xsd:int ;
+    bibo:numPages "18"^^xsd:int ;
+    dc:subject "Formal Methods" , "Memory Safety" , "Programming Languages" ;
+    dc:language "en" ;
+    bibo:doi "10.1109/TSE.2024.3365789" ;
+    dcterms:bibliographicCitation "Garcia, R. and Wilson, D. (2024). Formal Verification of Memory Safety in Systems Programming Languages. IEEE Transactions on Software Engineering, 50(2), 145-162." .
+
+ex:paper-004 a bibo:AcademicArticle ;
+    dc:title "Quantum-Resistant Cryptographic Protocols: Implementation and Performance Analysis" ;
+    dc:creator auth:david-wilson ;
+    dcterms:abstract "This paper evaluates the implementation and performance characteristics of post-quantum cryptographic protocols, analyzing their practical deployment considerations in modern distributed systems." ;
+    dcterms:issued "2024-05-20"^^xsd:date ;
+    bibo:presentedAt venue:sp2024 ;
+    dc:subject "Cryptography" , "Quantum Computing" , "Security" ;
+    bibo:pageStart "67"^^xsd:int ;
+    bibo:pageEnd "82"^^xsd:int ;
+    bibo:numPages "16"^^xsd:int ;
+    dc:language "en" ;
+    bibo:doi "10.1109/SP2024.67890" ;
+    dcterms:bibliographicCitation "Wilson, D. (2024). Quantum-Resistant Cryptographic Protocols: Implementation and Performance Analysis. In Proceedings of IEEE S&P 2024, pp. 67-82." .
+
+ex:paper-005 a bibo:AcademicArticle ;
+    dc:title "Machine Learning for Predictive Software Maintenance: A Large-Scale Empirical Study" ;
+    dc:creator auth:sarah-kim , auth:alice-chen , auth:bob-garcia ;
+    dcterms:abstract "We present a large-scale empirical study on the application of machine learning techniques for predictive software maintenance, analyzing data from over 1000 open-source projects to identify patterns in software evolution." ;
+    dcterms:issued "2024-04-14"^^xsd:date ;
+    bibo:presentedAt venue:icse2024 ;
+    dc:subject "Machine Learning" , "Software Maintenance" , "Empirical Study" ;
+    bibo:pageStart "234"^^xsd:int ;
+    bibo:pageEnd "245"^^xsd:int ;
+    bibo:numPages "12"^^xsd:int ;
+    dc:language "en" ;
+    bibo:doi "10.1109/ICSE2024.234567" ;
+    dcterms:bibliographicCitation "Kim, S., Chen, A., and Garcia, R. (2024). Machine Learning for Predictive Software Maintenance: A Large-Scale Empirical Study. In Proceedings of ICSE 2024, pp. 234-245." .
+
+# Citation relationships
+ex:paper-003 dcterms:references ex:paper-001 .
+ex:paper-005 dcterms:references ex:paper-001 , ex:paper-002 .
+ex:paper-004 dcterms:references ex:paper-003 .

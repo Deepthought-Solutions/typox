@@ -1,0 +1,220 @@
+# Copyright (c) 2024 Typox Project Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix dbp: <http://dbpedia.org/property/> .
+@prefix ex: <http://example.org/locations/> .
+
+# Countries
+ex:usa a gn:Country ;
+    gn:name "United States of America" ;
+    gn:officialName "United States of America" ;
+    gn:countryCode "US" ;
+    gn:population "331900000"^^xsd:int ;
+    gn:continent "North America" ;
+    rdfs:comment "Federal republic in North America" .
+
+ex:canada a gn:Country ;
+    gn:name "Canada" ;
+    gn:officialName "Canada" ;
+    gn:countryCode "CA" ;
+    gn:population "38200000"^^xsd:int ;
+    gn:continent "North America" ;
+    rdfs:comment "Constitutional monarchy in North America" .
+
+ex:france a gn:Country ;
+    gn:name "France" ;
+    gn:officialName "French Republic" ;
+    gn:countryCode "FR" ;
+    gn:population "67500000"^^xsd:int ;
+    gn:continent "Europe" ;
+    rdfs:comment "Republic in Western Europe" .
+
+ex:japan a gn:Country ;
+    gn:name "Japan" ;
+    gn:officialName "Japan" ;
+    gn:countryCode "JP" ;
+    gn:population "125800000"^^xsd:int ;
+    gn:continent "Asia" ;
+    rdfs:comment "Island country in East Asia" .
+
+# States/Provinces
+ex:california a gn:A.ADM1 ;
+    gn:name "California" ;
+    gn:officialName "State of California" ;
+    gn:parentCountry ex:usa ;
+    gn:population "39500000"^^xsd:int ;
+    dbp:capital ex:sacramento ;
+    rdfs:comment "Most populous state in the United States" .
+
+ex:ontario a gn:A.ADM1 ;
+    gn:name "Ontario" ;
+    gn:officialName "Province of Ontario" ;
+    gn:parentCountry ex:canada ;
+    gn:population "14700000"^^xsd:int ;
+    dbp:capital ex:toronto ;
+    rdfs:comment "Most populous province in Canada" .
+
+# Cities
+ex:san-francisco a gn:P.PPL ;
+    gn:name "San Francisco" ;
+    gn:officialName "City and County of San Francisco" ;
+    gn:parentADM1 ex:california ;
+    gn:parentCountry ex:usa ;
+    gn:population "874961"^^xsd:int ;
+    geo:lat "37.7749"^^xsd:decimal ;
+    geo:long "-122.4194"^^xsd:decimal ;
+    gn:elevation "16"^^xsd:int ;
+    gn:timezone "America/Los_Angeles" ;
+    rdfs:comment "Major city in Northern California known for technology and culture" .
+
+ex:los-angeles a gn:P.PPLA ;
+    gn:name "Los Angeles" ;
+    gn:officialName "City of Los Angeles" ;
+    gn:parentADM1 ex:california ;
+    gn:parentCountry ex:usa ;
+    gn:population "3898747"^^xsd:int ;
+    geo:lat "34.0522"^^xsd:decimal ;
+    geo:long "-118.2437"^^xsd:decimal ;
+    gn:elevation "87"^^xsd:int ;
+    gn:timezone "America/Los_Angeles" ;
+    rdfs:comment "Most populous city in California and second-most populous in the US" .
+
+ex:sacramento a gn:P.PPLC ;
+    gn:name "Sacramento" ;
+    gn:officialName "City of Sacramento" ;
+    gn:parentADM1 ex:california ;
+    gn:parentCountry ex:usa ;
+    gn:population "524943"^^xsd:int ;
+    geo:lat "38.5816"^^xsd:decimal ;
+    geo:long "-121.4944"^^xsd:decimal ;
+    gn:elevation "9"^^xsd:int ;
+    gn:timezone "America/Los_Angeles" ;
+    rdfs:comment "Capital city of California" .
+
+ex:toronto a gn:P.PPLA ;
+    gn:name "Toronto" ;
+    gn:officialName "City of Toronto" ;
+    gn:parentADM1 ex:ontario ;
+    gn:parentCountry ex:canada ;
+    gn:population "2794356"^^xsd:int ;
+    geo:lat "43.6532"^^xsd:decimal ;
+    geo:long "-79.3832"^^xsd:decimal ;
+    gn:elevation "76"^^xsd:int ;
+    gn:timezone "America/Toronto" ;
+    rdfs:comment "Most populous city in Canada and provincial capital of Ontario" .
+
+ex:paris a gn:P.PPLC ;
+    gn:name "Paris" ;
+    gn:officialName "City of Paris" ;
+    gn:parentCountry ex:france ;
+    gn:population "2161000"^^xsd:int ;
+    geo:lat "48.8566"^^xsd:decimal ;
+    geo:long "2.3522"^^xsd:decimal ;
+    gn:elevation "35"^^xsd:int ;
+    gn:timezone "Europe/Paris" ;
+    rdfs:comment "Capital and most populous city of France" .
+
+ex:tokyo a gn:P.PPLC ;
+    gn:name "Tokyo" ;
+    gn:officialName "Tokyo Metropolis" ;
+    gn:parentCountry ex:japan ;
+    gn:population "13960000"^^xsd:int ;
+    geo:lat "35.6762"^^xsd:decimal ;
+    geo:long "139.6503"^^xsd:decimal ;
+    gn:elevation "6"^^xsd:int ;
+    gn:timezone "Asia/Tokyo" ;
+    rdfs:comment "Capital and most populous metropolitan area of Japan" .
+
+# Landmarks and Points of Interest
+ex:golden-gate-bridge a gn:S.BDG ;
+    gn:name "Golden Gate Bridge" ;
+    gn:parentFeature ex:san-francisco ;
+    geo:lat "37.8199"^^xsd:decimal ;
+    geo:long "-122.4783"^^xsd:decimal ;
+    gn:elevation "67"^^xsd:int ;
+    rdfs:comment "Iconic suspension bridge spanning the Golden Gate strait" .
+
+ex:cn-tower a gn:S.TOWR ;
+    gn:name "CN Tower" ;
+    gn:officialName "Canadian National Tower" ;
+    gn:parentFeature ex:toronto ;
+    geo:lat "43.6426"^^xsd:decimal ;
+    geo:long "-79.3871"^^xsd:decimal ;
+    gn:elevation "553"^^xsd:int ;
+    rdfs:comment "Telecommunications tower and landmark of Toronto" .
+
+ex:eiffel-tower a gn:S.TOWR ;
+    gn:name "Eiffel Tower" ;
+    gn:officialName "Tour Eiffel" ;
+    gn:parentFeature ex:paris ;
+    geo:lat "48.8584"^^xsd:decimal ;
+    geo:long "2.2945"^^xsd:decimal ;
+    gn:elevation "330"^^xsd:int ;
+    rdfs:comment "Iron lattice tower and symbol of Paris" .
+
+ex:mount-fuji a gn:T.PK ;
+    gn:name "Mount Fuji" ;
+    gn:officialName "Fujisan" ;
+    gn:parentCountry ex:japan ;
+    geo:lat "35.3606"^^xsd:decimal ;
+    geo:long "138.7274"^^xsd:decimal ;
+    gn:elevation "3776"^^xsd:int ;
+    rdfs:comment "Highest mountain in Japan and active stratovolcano" .
+
+# Universities and Educational Institutions
+ex:stanford-university a gn:S.SCH ;
+    gn:name "Stanford University" ;
+    gn:officialName "Leland Stanford Junior University" ;
+    gn:parentFeature ex:san-francisco ;
+    geo:lat "37.4275"^^xsd:decimal ;
+    geo:long "-122.1697"^^xsd:decimal ;
+    gn:elevation "62"^^xsd:int ;
+    rdfs:comment "Private research university in Stanford, California" .
+
+ex:university-of-toronto a gn:S.SCH ;
+    gn:name "University of Toronto" ;
+    gn:officialName "University of Toronto" ;
+    gn:parentFeature ex:toronto ;
+    geo:lat "43.6629"^^xsd:decimal ;
+    geo:long "-79.3957"^^xsd:decimal ;
+    gn:elevation "76"^^xsd:int ;
+    rdfs:comment "Public research university in Toronto, Ontario" .
+
+# Climate and Weather Information
+ex:san-francisco gn:climate [
+    a gn:Climate ;
+    gn:climateType "Mediterranean" ;
+    dbp:averageTemperature "14.6"^^xsd:decimal ;
+    dbp:averageRainfall "594"^^xsd:decimal ;
+    rdfs:comment "Mild, temperate oceanic climate"
+] .
+
+ex:toronto gn:climate [
+    a gn:Climate ;
+    gn:climateType "Humid Continental" ;
+    dbp:averageTemperature "9.4"^^xsd:decimal ;
+    dbp:averageRainfall "834"^^xsd:decimal ;
+    rdfs:comment "Four distinct seasons with warm summers and cold winters"
+] .

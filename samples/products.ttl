@@ -1,0 +1,220 @@
+# Copyright (c) 2024 Typox Project Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <https://schema.org/> .
+@prefix ex: <http://example.org/catalog/> .
+@prefix cat: <http://example.org/catalog/categories/> .
+
+# Product Categories
+cat:electronics a schema:Category ;
+    schema:name "Electronics" ;
+    rdfs:label "Electronics" ;
+    schema:description "Electronic devices and gadgets" .
+
+cat:books a schema:Category ;
+    schema:name "Books" ;
+    rdfs:label "Books" ;
+    schema:description "Physical and digital books" .
+
+cat:clothing a schema:Category ;
+    schema:name "Clothing" ;
+    rdfs:label "Clothing" ;
+    schema:description "Apparel and fashion items" .
+
+cat:home a schema:Category ;
+    schema:name "Home & Garden" ;
+    rdfs:label "Home & Garden" ;
+    schema:description "Home improvement and garden supplies" .
+
+# Products
+ex:laptop-001 a schema:Product ;
+    schema:name "UltraBook Pro 15" ;
+    schema:description "High-performance laptop with 15-inch display, 16GB RAM, 512GB SSD" ;
+    schema:brand "TechMaster" ;
+    schema:model "UBP-15-2024" ;
+    schema:sku "LAPTOP-001" ;
+    schema:category cat:electronics ;
+    schema:price "1299.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:weight "1.8"^^xsd:decimal ;
+    schema:color "Space Gray" ;
+    schema:operatingSystem "Linux" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.5"^^xsd:decimal ;
+        schema:reviewCount "127"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "1"^^xsd:int
+    ] .
+
+ex:smartphone-001 a schema:Product ;
+    schema:name "Phoenix X1 Pro" ;
+    schema:description "Flagship smartphone with advanced camera system" ;
+    schema:brand "Phoenix Mobile" ;
+    schema:model "X1-PRO-128" ;
+    schema:sku "PHONE-001" ;
+    schema:category cat:electronics ;
+    schema:price "899.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:weight "0.189"^^xsd:decimal ;
+    schema:color "Midnight Black" ;
+    schema:screenSize "6.1 inches" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.2"^^xsd:decimal ;
+        schema:reviewCount "89"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "1"^^xsd:int
+    ] .
+
+ex:book-001 a schema:Book ;
+    schema:name "The Art of Functional Programming" ;
+    schema:description "A comprehensive guide to functional programming concepts and practices" ;
+    schema:author "Dr. Sarah Chen" ;
+    schema:isbn "978-0-123456-78-9" ;
+    schema:sku "BOOK-001" ;
+    schema:category cat:books ;
+    schema:price "45.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:numberOfPages "384"^^xsd:int ;
+    schema:publisher "Tech Publications" ;
+    schema:datePublished "2024-03-15"^^xsd:date ;
+    schema:language "en" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.7"^^xsd:decimal ;
+        schema:reviewCount "203"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "1"^^xsd:int
+    ] .
+
+ex:book-002 a schema:Book ;
+    schema:name "Rust Programming Mastery" ;
+    schema:description "From beginner to expert: master systems programming with Rust" ;
+    schema:author "Alex Rodriguez" ;
+    schema:isbn "978-0-987654-32-1" ;
+    schema:sku "BOOK-002" ;
+    schema:category cat:books ;
+    schema:price "52.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:numberOfPages "456"^^xsd:int ;
+    schema:publisher "Systems Press" ;
+    schema:datePublished "2024-01-20"^^xsd:date ;
+    schema:language "en" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.8"^^xsd:decimal ;
+        schema:reviewCount "156"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "2"^^xsd:int
+    ] .
+
+ex:tshirt-001 a schema:Product ;
+    schema:name "Premium Cotton T-Shirt" ;
+    schema:description "100% organic cotton t-shirt with modern fit" ;
+    schema:brand "EcoWear" ;
+    schema:sku "TSHIRT-001" ;
+    schema:category cat:clothing ;
+    schema:price "24.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:color "Navy Blue" ;
+    schema:size "M" ;
+    schema:material "100% Organic Cotton" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.3"^^xsd:decimal ;
+        schema:reviewCount "67"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "2"^^xsd:int
+    ] .
+
+ex:coffee-maker-001 a schema:Product ;
+    schema:name "BrewMaster Deluxe" ;
+    schema:description "Programmable drip coffee maker with thermal carafe" ;
+    schema:brand "KitchenPro" ;
+    schema:model "BM-DELUXE-12" ;
+    schema:sku "COFFEE-001" ;
+    schema:category cat:home ;
+    schema:price "129.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:weight "3.2"^^xsd:decimal ;
+    schema:color "Stainless Steel" ;
+    schema:capacity "12 cups" ;
+    schema:powerConsumption "1200W" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.1"^^xsd:decimal ;
+        schema:reviewCount "94"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "1"^^xsd:int
+    ] .
+
+ex:headphones-001 a schema:Product ;
+    schema:name "AcousticWave Pro Wireless" ;
+    schema:description "Premium noise-canceling wireless headphones" ;
+    schema:brand "SoundTech" ;
+    schema:model "AWP-NC-2024" ;
+    schema:sku "HEADPHONES-001" ;
+    schema:category cat:electronics ;
+    schema:price "199.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:InStock ;
+    schema:weight "0.285"^^xsd:decimal ;
+    schema:color "Matte Black" ;
+    schema:batteryLife "30 hours" ;
+    schema:connectivityTechnology "Bluetooth 5.2" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.4"^^xsd:decimal ;
+        schema:reviewCount "78"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "2"^^xsd:int
+    ] .
+
+# Out of stock product
+ex:tablet-001 a schema:Product ;
+    schema:name "TabletMaster 10 Pro" ;
+    schema:description "Professional tablet with stylus support" ;
+    schema:brand "TechMaster" ;
+    schema:model "TM-10-PRO" ;
+    schema:sku "TABLET-001" ;
+    schema:category cat:electronics ;
+    schema:price "649.99"^^xsd:decimal ;
+    schema:priceCurrency "USD" ;
+    schema:availability schema:OutOfStock ;
+    schema:weight "0.485"^^xsd:decimal ;
+    schema:color "Silver" ;
+    schema:screenSize "10.5 inches" ;
+    schema:aggregateRating [
+        a schema:AggregateRating ;
+        schema:ratingValue "4.0"^^xsd:decimal ;
+        schema:reviewCount "45"^^xsd:int ;
+        schema:bestRating "5"^^xsd:int ;
+        schema:worstRating "1"^^xsd:int
+    ] .

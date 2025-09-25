@@ -1,0 +1,249 @@
+# Copyright (c) 2024 Typox Project Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Typox Demo SPARQL Queries
+# This file contains example SPARQL queries for the various turtle datasets
+
+# ===== PEOPLE QUERIES (FOAF) =====
+
+# Query 1: Basic person information
+SELECT ?name ?age ?title WHERE {
+  ?person foaf:name ?name ;
+          foaf:age ?age ;
+          foaf:title ?title .
+}
+ORDER BY ?age
+
+# Query 2: People and their relationships
+SELECT ?person1 ?person2 WHERE {
+  ?p1 foaf:name ?person1 ;
+      foaf:knows ?p2 .
+  ?p2 foaf:name ?person2 .
+}
+ORDER BY ?person1 ?person2
+
+# Query 3: People with their interests
+SELECT ?name ?interest WHERE {
+  ?person foaf:name ?name ;
+          foaf:interest ?interest .
+}
+
+# Query 4: People by workplace
+SELECT ?name ?workplace WHERE {
+  ?person foaf:name ?name ;
+          foaf:workplaceHomepage ?workplace .
+}
+
+# ===== PRODUCTS QUERIES (Schema.org) =====
+
+# Query 5: Products with basic information
+SELECT ?name ?price ?brand ?category WHERE {
+  ?product schema:name ?name ;
+           schema:price ?price ;
+           schema:brand ?brand ;
+           schema:category ?cat .
+  ?cat schema:name ?category .
+}
+ORDER BY ?price
+
+# Query 6: Products by rating (highest first)
+SELECT ?name ?rating ?reviews WHERE {
+  ?product schema:name ?name ;
+           schema:aggregateRating ?rating_obj .
+  ?rating_obj schema:ratingValue ?rating ;
+              schema:reviewCount ?reviews .
+}
+ORDER BY DESC(?rating)
+
+# Query 7: Electronics products only
+SELECT ?name ?price ?brand WHERE {
+  ?product schema:name ?name ;
+           schema:price ?price ;
+           schema:brand ?brand ;
+           schema:category ?cat .
+  ?cat schema:name "Electronics" .
+}
+
+# Query 8: Books with publication details
+SELECT ?title ?author ?pages ?publisher WHERE {
+  ?book a schema:Book ;
+        schema:name ?title ;
+        schema:author ?author ;
+        schema:numberOfPages ?pages ;
+        schema:publisher ?publisher .
+}
+
+# ===== PUBLICATIONS QUERIES (Dublin Core + BIBO) =====
+
+# Query 9: Recent publications
+SELECT ?title ?author ?year WHERE {
+  ?paper dc:title ?title ;
+         dc:creator ?creator ;
+         dcterms:issued ?date .
+  ?creator foaf:name ?author .
+  BIND(YEAR(?date) AS ?year)
+  FILTER(?year >= 2024)
+}
+ORDER BY DESC(?year)
+
+# Query 10: Publications by venue type
+SELECT ?title ?venueTitle ?venueType WHERE {
+  ?paper dc:title ?title ;
+         bibo:presentedAt ?venue .
+  ?venue dc:title ?venueTitle .
+  ?venue a ?venueType .
+  FILTER(?venueType IN (bibo:Conference, bibo:Journal))
+}
+
+# Query 11: Authors and their publication count
+SELECT ?author (COUNT(?paper) as ?pubCount) WHERE {
+  ?paper dc:creator ?creator .
+  ?creator foaf:name ?author .
+}
+GROUP BY ?author
+ORDER BY DESC(?pubCount)
+
+# Query 12: Citation relationships
+SELECT ?citingTitle ?citedTitle WHERE {
+  ?citingPaper dc:title ?citingTitle ;
+               dcterms:references ?citedPaper .
+  ?citedPaper dc:title ?citedTitle .
+}
+
+# ===== LOCATIONS QUERIES (GeoNames) =====
+
+# Query 13: Cities with coordinates
+SELECT ?name ?country ?population ?lat ?long WHERE {
+  ?location gn:name ?name ;
+            gn:parentCountry ?country_obj ;
+            gn:population ?population ;
+            geo:lat ?lat ;
+            geo:long ?long .
+  ?country_obj gn:name ?country .
+}
+ORDER BY DESC(?population)
+
+# Query 14: Countries and their populations
+SELECT ?country ?population WHERE {
+  ?c a gn:Country ;
+     gn:name ?country ;
+     gn:population ?population .
+}
+ORDER BY DESC(?population)
+
+# Query 15: Landmarks and their locations
+SELECT ?landmark ?city ?elevation WHERE {
+  ?landmark gn:name ?landmarkName ;
+            gn:parentFeature ?cityObj ;
+            gn:elevation ?elevation .
+  ?cityObj gn:name ?city .
+  FILTER(?elevation > 50)
+}
+
+# Query 16: Educational institutions
+SELECT ?institution ?city ?lat ?long WHERE {
+  ?inst a gn:S.SCH ;
+        gn:name ?institution ;
+        gn:parentFeature ?cityObj ;
+        geo:lat ?lat ;
+        geo:long ?long .
+  ?cityObj gn:name ?city .
+}
+
+# ===== DATATYPES QUERIES (XSD Examples) =====
+
+# Query 17: Numeric data examples
+SELECT ?label ?decimal ?float ?integer WHERE {
+  ?example rdfs:label ?label ;
+           ex:decimalValue ?decimal ;
+           ex:floatValue ?float ;
+           ex:largeInteger ?integer .
+}
+
+# Query 18: Date and time examples
+SELECT ?label ?date ?dateTime ?duration WHERE {
+  ?example rdfs:label ?label ;
+           ex:birthDate ?date ;
+           ex:eventDateTime ?dateTime ;
+           ex:duration ?duration .
+}
+
+# Query 19: Boolean values
+SELECT ?label ?active ?complete WHERE {
+  ?example rdfs:label ?label ;
+           ex:isActive ?active ;
+           ex:isComplete ?complete .
+}
+
+# Query 20: User profiles with mixed datatypes
+SELECT ?username ?email ?balance ?score ?active WHERE {
+  ?profile ex:username ?username ;
+           ex:email ?email ;
+           ex:accountBalance ?balance ;
+           ex:profileScore ?score ;
+           ex:isActive ?active .
+}
+
+# ===== CROSS-DATASET QUERIES =====
+
+# Query 21: Count entities by type across all datasets
+SELECT ?type (COUNT(?entity) as ?count) WHERE {
+  ?entity a ?type .
+}
+GROUP BY ?type
+ORDER BY DESC(?count)
+
+# Query 22: All names across datasets
+SELECT DISTINCT ?name WHERE {
+  { ?entity foaf:name ?name . }
+  UNION
+  { ?entity schema:name ?name . }
+  UNION
+  { ?entity gn:name ?name . }
+  UNION
+  { ?entity dc:title ?name . }
+}
+ORDER BY ?name
+
+# Query 23: Numeric values across all datasets
+SELECT ?entity ?property ?value WHERE {
+  ?entity ?property ?value .
+  FILTER(isNumeric(?value))
+  FILTER(?value > 100)
+}
+ORDER BY DESC(?value)
+
+# Query 24: Geographic entities and their coordinates
+SELECT ?name ?type ?lat ?long WHERE {
+  ?entity gn:name ?name ;
+          a ?type ;
+          geo:lat ?lat ;
+          geo:long ?long .
+}
+
+# Query 25: All email addresses
+SELECT DISTINCT ?email WHERE {
+  { ?person foaf:mbox ?mailtoURI .
+    BIND(REPLACE(STR(?mailtoURI), "^mailto:", "") AS ?email)
+  }
+  UNION
+  { ?profile ex:email ?email . }
+}
+ORDER BY ?email
