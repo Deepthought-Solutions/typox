@@ -26,12 +26,21 @@ SOFTWARE.
 
 Typox bridges the gap between semantic data and document generation, allowing you to query RDF knowledge graphs using SPARQL and directly use the results in your Typst templates with proper type preservation and automatic formatting.
 
+## Implementation Versions
+
+- **🚀 CLI Version (Stable):** Full Oxigraph integration with complete SPARQL 1.1 support
+- **⚡ WASM Plugin (Beta):** Native Typst integration with simplified RDF processing
+
+For production use, we recommend the CLI version. The WASM plugin demonstrates the future architecture and works well for simple use cases. See `WASM_PLUGIN_README.md` for detailed comparison.
+
 ## 🌟 Features
 
 - **🔄 Native Typst Integration**: Use `oxload()` function directly in templates, just like `json()`
+- **🌐 HTTP SPARQL Endpoint Support**: Query remote endpoints like DBpedia, Wikidata, and custom SPARQL services
+- **💾 Local Oxigraph Stores**: Fast, persistent local RDF data storage
 - **🎯 Smart Type Preservation**: Numbers stay as numbers, strings as strings
 - **🏷️ Intelligent Prefix Handling**: Automatic URI shortening with common RDF prefixes
-- **🌐 Clean Language Processing**: Language tags automatically removed
+- **🌍 Clean Language Processing**: Language tags automatically removed
 - **⚡ Full SPARQL Support**: Complete SPARQL SELECT query capabilities
 - **📁 Flexible Output**: Generate JSON files or pipe to stdout
 - **🛡️ Robust Error Handling**: Clear failures for missing stores or empty results
@@ -60,20 +69,34 @@ Typox bridges the gap between semantic data and document generation, allowing yo
    cargo build --release
    ```
 
-2. **Generate data from your RDF store:**
+2. **Query local or remote data sources:**
    ```bash
+   # Local Oxigraph store
    ./target/release/typox -s /path/to/your/store \
      -q "SELECT ?name ?age WHERE { ?person foaf:name ?name ; foaf:age ?age }" \
      -o people.json
+
+   # Remote SPARQL endpoint
+   ./target/release/typox -s "https://dbpedia.org/sparql" \
+     -q "SELECT ?city ?population WHERE {
+           ?city a dbo:City ;
+           dbo:populationTotal ?population
+         } LIMIT 10" \
+     -o cities.json
    ```
 
 3. **Use in your Typst document:**
    ```typst
    #import "typst-package/lib.typ": oxload-file
    #let people = oxload-file("people.json")
+   #let cities = oxload-file("cities.json")
 
    #for person in people [
      - *#person.name*: #person.age years old
+   ]
+
+   #for city in cities [
+     - *#city.name*: #city.population inhabitants
    ]
    ```
 
@@ -139,18 +162,45 @@ Copy the `typst-package` directory to your project and import:
 
 ### 2. Command Line Usage
 
-#### Basic Query
+#### Basic Query (Local Store)
 
 ```bash
 typox -s /path/to/store -q "SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5"
 ```
 
+#### HTTP SPARQL Endpoint Query
+
+```bash
+# Query DBpedia
+typox -s "https://dbpedia.org/sparql" \
+      -q "PREFIX dbo: <http://dbpedia.org/ontology/>
+          SELECT ?city ?population WHERE {
+            ?city a dbo:City ;
+                  dbo:populationTotal ?population ;
+                  rdfs:label ?label .
+            FILTER(lang(?label) = 'en' && ?population > 8000000)
+          } LIMIT 5"
+
+# Query Wikidata
+typox -s "https://query.wikidata.org/sparql" \
+      -q "SELECT ?item ?itemLabel WHERE {
+            ?item wdt:P31 wd:Q5 .
+            SERVICE wikibase:label { bd:serviceParam wikibase:language 'en' }
+          } LIMIT 10"
+```
+
 #### Save to File
 
 ```bash
+# Local store
 typox -s /path/to/store \
       -q "SELECT ?name ?email WHERE { ?person foaf:name ?name ; foaf:mbox ?email }" \
       -o contacts.json
+
+# Remote endpoint
+typox -s "https://dbpedia.org/sparql" \
+      -q "SELECT ?country ?capital WHERE { ?country dbo:capital ?capital } LIMIT 10" \
+      -o countries.json
 ```
 
 #### Complex Queries
@@ -260,6 +310,110 @@ SELECT ?person ?skill ?level WHERE {
 ```
 
 Results will use shortened forms: `vocab:hasSkill`, `ex:skill`
+
+## 🌐 HTTP SPARQL Endpoints
+
+Typox supports querying remote SPARQL endpoints via HTTP, enabling integration with public knowledge bases and external data sources.
+
+### Supported Endpoints
+
+- **DBpedia**: `https://dbpedia.org/sparql` - Structured information from Wikipedia
+- **Wikidata**: `https://query.wikidata.org/sparql` - Collaborative knowledge base
+- **Any SPARQL 1.1 compliant endpoint** that accepts POST requests with `application/x-www-form-urlencoded` data
+
+### HTTP Endpoint Examples
+
+#### DBpedia Cities
+
+```bash
+./target/release/typox -s "https://dbpedia.org/sparql" \
+  -q "PREFIX dbo: <http://dbpedia.org/ontology/>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT ?city ?population ?label WHERE {
+        ?city a dbo:City ;
+              dbo:populationTotal ?population ;
+              rdfs:label ?label .
+        FILTER(lang(?label) = 'en' && ?population > 5000000)
+      }
+      ORDER BY DESC(?population)
+      LIMIT 10" \
+  -o world_cities.json
+```
+
+#### Wikidata Scientists
+
+```bash
+./target/release/typox -s "https://query.wikidata.org/sparql" \
+  -q "SELECT ?scientist ?scientistLabel ?birthDate ?fieldLabel WHERE {
+        ?scientist wdt:P31 wd:Q5 ;           # human
+                   wdt:P106 wd:Q901 ;         # occupation: scientist
+                   wdt:P569 ?birthDate ;      # birth date
+                   wdt:P101 ?field .          # field of work
+        SERVICE wikibase:label { bd:serviceParam wikibase:language 'en' . }
+        FILTER(YEAR(?birthDate) > 1900)
+      }
+      ORDER BY ?birthDate
+      LIMIT 20" \
+  -o scientists.json
+```
+
+#### Mixed Local and Remote Data
+
+```bash
+# Generate local university data
+./target/release/typox -s ./university-kb \
+  -q "SELECT ?student ?name ?major WHERE {
+        ?student foaf:name ?name ; ex:major ?major
+      }" \
+  -o local_students.json
+
+# Get related field information from Wikidata
+./target/release/typox -s "https://query.wikidata.org/sparql" \
+  -q "SELECT ?field ?fieldLabel ?description WHERE {
+        ?field wdt:P31 wd:Q11862829 ;  # academic discipline
+               rdfs:label ?fieldLabel ;
+               schema:description ?description .
+        FILTER(lang(?fieldLabel) = 'en' && lang(?description) = 'en')
+      }
+      LIMIT 50" \
+  -o academic_fields.json
+```
+
+### HTTP Integration in Typst
+
+```typst
+#import "typst-package/lib.typ": oxload-file
+
+// Load data from different sources
+#let local_data = oxload-file("local_research.json")
+#let dbpedia_data = oxload-file("dbpedia_cities.json")
+#let wikidata_data = oxload-file("scientists.json")
+
+= Mixed Data Report
+
+== Local Research Projects
+#for project in local_data [
+  === #project.title
+  *PI:* #project.investigator \
+  *Duration:* #project.duration
+]
+
+== Major World Cities (DBpedia)
+#table(
+  columns: 3,
+  [*City*], [*Population*], [*Country*],
+  ..dbpedia_data.map(city => (
+    city.label,
+    city.population,
+    city.country
+  )).flatten()
+)
+
+== Notable Scientists (Wikidata)
+#for scientist in wikidata_data.slice(0, 5) [
+  - *#scientist.scientistLabel* (#scientist.birthDate): #scientist.fieldLabel
+]
+```
 
 ## 📊 Complete Examples
 

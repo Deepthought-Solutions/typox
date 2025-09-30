@@ -1,0 +1,30 @@
+# Copyright (c) 2024 Typox Project Contributors
+# Licensed under the MIT License - see LICENSE file for details
+
+[package]
+name = "typox-plugin"
+version = "0.1.0"
+edition = "2021"
+description = "WebAssembly plugin for Typox - RDF to Typst integration"
+authors = ["Typox Project Contributors"]
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+wasm-minimal-protocol = "0.1.0"
+getrandom = "0.3"
+
+# Option 2: Direct oxigraph dependency with WASM target
+# Using minimal features to reduce binary size and WASM compatibility issues
+oxigraph = { version = "0.5", default-features = false }
+
+[features]
+default = []
+
+[profile.release]
+lto = true
+opt-level = "s"  # Optimize for size
+panic = "abort"

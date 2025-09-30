@@ -179,6 +179,7 @@ cat > "$QUERIES_DIR/publications_basic.sparql" << 'EOF'
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT ?title ?author ?year WHERE {
   ?paper dc:title ?title ;
@@ -210,12 +211,12 @@ EOF
 cat > "$QUERIES_DIR/datatypes_numeric.sparql" << 'EOF'
 PREFIX ex: <http://example.org/datatypes/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?label ?decimal ?float ?integer WHERE {
+SELECT ?label ?decimal ?float WHERE {
   ?example rdfs:label ?label ;
            ex:decimalValue ?decimal ;
-           ex:floatValue ?float ;
-           ex:largeInteger ?integer .
+           ex:floatValue ?float .
 }
 EOF
 

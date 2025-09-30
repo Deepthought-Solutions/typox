@@ -21,7 +21,7 @@
  */
 
 #import "typst-package/lib.typ": oxload-file
-#import "@preview/tablex:0.0.8": tablex, cellx, colspanx, rowspanx
+//#import "@preview/tablex:0.0.8": tablex, cellx, colspanx, rowspanx
 
 = Typox: RDF Data Integration Demo
 
@@ -56,18 +56,17 @@ We've created five diverse RDF datasets to showcase different vocabularies and u
 
 The people dataset uses the FOAF (Friend of a Friend) vocabulary to represent software professionals and their relationships.
 
-#let people_data = oxload-file("demo/results/people_basic.json")
+#let people_data = oxload-file("../demo/results/people_basic.json")
 
-#tablex(
+#table(
   columns: 4,
-  header-rows: 1,
-  [*Name*], [*Age*], [*Title*], [*Department*],
+    [*Name*], [*Age*], [*Title*], [*Department*],
   ..people_data.map(person => (person.name, str(person.age), person.title, "Engineering")).flatten()
 )
 
 *Network of Professional Relationships:*
 
-#let relationships = oxload-file("demo/results/people_relationships.json")
+#let relationships = oxload-file("../demo/results/people_relationships.json")
 
 #for rel in relationships [
   - *#rel.person1* knows *#rel.person2*
@@ -77,20 +76,19 @@ The people dataset uses the FOAF (Friend of a Friend) vocabulary to represent so
 
 Our e-commerce dataset demonstrates product information using Schema.org vocabulary.
 
-#let products_data = oxload-file("demo/results/products_basic.json")
+#let products_data = oxload-file("../demo/results/products_basic.json")
 
 ==== Featured Products
 
-#tablex(
+#table(
   columns: 4,
-  header-rows: 1,
-  [*Product*], [*Price*], [*Brand*], [*Category*],
+    [*Product*], [*Price*], [*Brand*], [*Category*],
   ..products_data.map(product => (product.name, "$" + str(product.price), product.brand, product.category)).flatten()
 )
 
 ==== Top Rated Products
 
-#let ratings_data = oxload-file("demo/results/products_ratings.json")
+#let ratings_data = oxload-file("../demo/results/products_ratings.json")
 
 #for product in ratings_data.slice(0, 3) [
   === #product.name
@@ -103,12 +101,11 @@ Our e-commerce dataset demonstrates product information using Schema.org vocabul
 
 Academic publication data using Dublin Core and BIBO ontologies.
 
-#let publications_data = oxload-file("demo/results/publications_basic.json")
+#let publications_data = oxload-file("../demo/results/publications_basic.json")
 
-#tablex(
+#table(
   columns: 3,
-  header-rows: 1,
-  [*Title*], [*Author*], [*Year*],
+    [*Title*], [*Author*], [*Year*],
   ..publications_data.map(pub => (pub.title, pub.author, str(pub.year))).flatten()
 )
 
@@ -116,7 +113,7 @@ Academic publication data using Dublin Core and BIBO ontologies.
 
 Location data using GeoNames ontology with coordinates and population data.
 
-#let locations_data = oxload-file("demo/results/locations_basic.json")
+#let locations_data = oxload-file("../demo/results/locations_basic.json")
 
 ==== Major Cities
 
@@ -131,13 +128,13 @@ Location data using GeoNames ontology with coordinates and population data.
 
 Comprehensive examples of XSD datatypes in RDF.
 
-#let datatypes_data = oxload-file("demo/results/datatypes_numeric.json")
+#let datatypes_data = oxload-file("../demo/results/datatypes_numeric.json")
 
-#tablex(
-  columns: 4,
-  header-rows: 1,
-  [*Example*], [*Decimal*], [*Float*], [*Integer*],
-  ..datatypes_data.map(dt => (dt.label, str(dt.decimal), str(dt.float), str(dt.integer))).flatten()
+#table(
+  columns: 3,
+
+    [*Example*], [*Decimal*], [*Float*],
+  ..datatypes_data.map(dt => (dt.label, str(dt.decimal), str(dt.float))).flatten()
 )
 
 == Technical Architecture
@@ -178,7 +175,7 @@ The `oxload-file()` function reads JSON query results directly into Typst:
 
 Numeric values are automatically converted to Typst numbers for calculations:
 
-#let numeric_data = oxload-file("demo/results/datatypes_numeric.json")
+#let numeric_data = oxload-file("../demo/results/datatypes_numeric.json")
 #let total_decimal = numeric_data.fold(0, (acc, item) => acc + item.decimal)
 
 Total of all decimal values: *#total_decimal*
@@ -261,8 +258,83 @@ ORDER BY DESC(?connections)
      -o my_results.json
    ```
 
+=== 6. Remote SPARQL Endpoints
+
+The new `oxload` function also supports querying remote HTTP SPARQL endpoints, allowing you to integrate external data sources directly into your Typst documents.
+
+#let dbpedia_cities = oxload-file("../demo/results/dbpedia_cities.json")
+
+==== Major World Cities (from DBpedia)
+
+#table(
+  columns: 2,
+    [*City*], [*Population*],
+  ..dbpedia_cities.map(city => {
+    let city_name = city.city.replace("http://dbpedia.org/resource/", "")
+    (city_name, city.population)
+  }).flatten()
+)
+
+==== Mixed Data Sources Example
+
+You can combine local store data with remote endpoint data in a single document:
+
+```bash
+# Query local store
+./target/release/typox query -s demo/stores/locations \\
+  -q "SELECT ?name ?population WHERE { ?city gn:name ?name ; gn:population ?population }"
+
+# Query remote endpoint
+./target/release/typox query -s "https://dbpedia.org/sparql" \\
+  -q "SELECT ?city ?population WHERE { ?city a dbo:City ; dbo:populationTotal ?population }"
+```
+
+== HTTP Endpoint Usage
+
+=== Command Line Examples
+
+```bash
+# Query DBpedia for cities
+./target/release/typox query -s "https://dbpedia.org/sparql" \\
+  -q "PREFIX dbo: <http://dbpedia.org/ontology/>
+      SELECT ?city ?population WHERE {
+        ?city a dbo:City ;
+              dbo:populationTotal ?population ;
+              rdfs:label ?label .
+        FILTER(lang(?label) = 'en' && ?population > 8000000)
+      } LIMIT 5" \\
+  -o cities.json
+
+# Query Wikidata
+./target/release/typox query -s "https://query.wikidata.org/sparql" \\
+  -q "SELECT ?item ?itemLabel WHERE {
+        ?item wdt:P31 wd:Q5 .
+        SERVICE wikibase:label { bd:serviceParam wikibase:language 'en' }
+      } LIMIT 10" \\
+  -o people.json
+```
+
+=== Typst Integration
+
+The `oxload` function automatically detects HTTP URLs and queries them as SPARQL endpoints:
+
+```typst
+#import "typst-package/lib.typ": oxload
+
+// This would query a remote endpoint (but requires pre-generated JSON for Typst)
+// Remote data must be pre-generated using the command line tool
+#let remote_data = oxload-file("remote_cities.json")
+```
+
 == Conclusion
 
-Typox provides a seamless bridge between the semantic web and document generation, enabling powerful data-driven documents with minimal setup. The combination of RDF's expressiveness, SPARQL's query capabilities, and Typst's typesetting excellence opens new possibilities for automated documentation and reporting.
+Typox now provides a seamless bridge between local RDF stores, remote SPARQL endpoints, and document generation, enabling powerful data-driven documents with minimal setup. The combination of:
 
-*Try it yourself with your own RDF data!*
+- **Local Oxigraph stores** for fast, consistent data access
+- **Remote SPARQL endpoints** for accessing external knowledge bases like DBpedia and Wikidata
+- **RDF's expressiveness** and **SPARQL's query capabilities**
+- **Typst's typesetting excellence**
+
+opens new possibilities for automated documentation and reporting that can incorporate both private and public data sources.
+
+*Try it yourself with your own RDF data and remote endpoints!*
