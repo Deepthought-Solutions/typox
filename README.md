@@ -29,9 +29,9 @@ Typox bridges the gap between semantic data and document generation, allowing yo
 ## Implementation Versions
 
 - **🚀 CLI Version (Stable):** Full Oxigraph integration with complete SPARQL 1.1 support
-- **⚡ WASM Plugin (Beta):** Native Typst integration with simplified RDF processing
+- **⚡ WASM Plugin (Beta):** Native Typst integration with in-memory RDF processing
 
-For production use, we recommend the CLI version. The WASM plugin demonstrates the future architecture and works well for simple use cases. See `WASM_PLUGIN_README.md` for detailed comparison.
+For production use, we recommend the CLI version. The WASM plugin provides native Typst integration without external dependencies and works well for in-memory RDF processing. See the [WASM Plugin](#-wasm-plugin-beta) section below for details.
 
 ## 🌟 Features
 
@@ -61,6 +61,7 @@ For production use, we recommend the CLI version. The WASM plugin demonstrates t
 - [Advanced Features](#advanced-features)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
+- [WASM Plugin (Beta)](#-wasm-plugin-beta)
 
 ## 🚀 Quick Start
 
@@ -939,6 +940,201 @@ cargo run -- -s test-store -q "SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5"
 3. Make your changes with tests
 4. Update documentation
 5. Submit a pull request
+
+## ⚡ WASM Plugin (Beta)
+
+The WASM plugin provides native Typst integration for RDF processing without requiring external CLI tools or file I/O. Data is processed entirely in-memory using WebAssembly.
+
+### Key Features
+
+- **Native Integration**: No external dependencies or shell commands
+- **In-Memory Processing**: Load Turtle data and query directly in Typst
+- **Multiple Stores**: Support for named stores to manage different datasets
+- **Zero File I/O**: All data processing happens in memory
+- **Type-Safe**: Automatic JSON conversion with proper type handling
+
+### Building the WASM Plugin
+
+1. **Install WASM target:**
+   ```bash
+   rustup target add wasm32-unknown-unknown
+   ```
+
+2. **Build the plugin:**
+   ```bash
+   ./build-wasm.sh
+   ```
+
+   The script will compile the plugin and copy `typox.wasm` to the `typst-package/` directory.
+
+3. **Optional - Optimize size:**
+   Install `wasm-opt` from the [Binaryen](https://github.com/WebAssembly/binaryen) toolkit to reduce the WASM file size (automatically used by the build script if available).
+
+### API Reference
+
+#### Core Functions
+
+- **`oxload-turtle(store-name, turtle-content)`** - Load Turtle RDF data into a named store
+- **`oxquery(store-name, sparql)`** - Execute SPARQL query against a named store
+- **`oxclear(store-name)`** - Clear all data from a store
+- **`oxlist-stores()`** - List all available stores
+- **`oxstore-size(store-name)`** - Get the number of triples in a store
+
+#### Convenience Functions
+
+- **`load-turtle(content)`** - Load data into the default "memory" store
+- **`query-memory(sparql)`** - Query the default memory store
+- **`clear-memory()`** - Clear the default memory store
+
+### Basic Usage Example
+
+```typst
+#import "typst-package/lib.typ": load-turtle, query-memory
+
+// Load RDF data in Turtle format
+#load-turtle("
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix ex: <http://example.org/> .
+
+ex:alice foaf:name 'Alice Johnson' ;
+         foaf:age 28 ;
+         foaf:email 'alice@example.org' .
+
+ex:bob foaf:name 'Bob Smith' ;
+       foaf:age 32 ;
+       foaf:email 'bob@example.org' .
+")
+
+// Query the loaded data
+#let people = query-memory("
+  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+  SELECT ?name ?age ?email WHERE {
+    ?person foaf:name ?name ;
+            foaf:age ?age ;
+            foaf:email ?email
+  }
+  ORDER BY ?age
+")
+
+= People Directory
+
+#table(
+  columns: 3,
+  [*Name*], [*Age*], [*Email*],
+  ..people.map(p => (p.name, str(p.age), p.email)).flatten()
+)
+```
+
+### Multi-Store Example
+
+Use named stores to manage different datasets independently:
+
+```typst
+#import "typst-package/lib.typ": oxload-turtle, oxquery, oxlist-stores, oxstore-size
+
+// Load projects data into a named store
+#oxload-turtle("projects", "
+@prefix ex: <http://example.org/> .
+ex:proj1 ex:title 'Typox Plugin' ;
+         ex:status 'In Progress' ;
+         ex:lead 'Alice' .
+ex:proj2 ex:title 'Documentation' ;
+         ex:status 'Complete' ;
+         ex:lead 'Bob' .
+")
+
+// Load location data into another store
+#oxload-turtle("locations", "
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix ex: <http://example.org/> .
+ex:paris gn:name 'Paris' ; gn:population 2161000 .
+ex:london gn:name 'London' ; gn:population 8982000 .
+")
+
+// Query each store independently
+#let projects = oxquery("projects", "
+  PREFIX ex: <http://example.org/>
+  SELECT ?title ?status ?lead WHERE {
+    ?project ex:title ?title ;
+             ex:status ?status ;
+             ex:lead ?lead
+  }
+  ORDER BY ?title
+")
+
+#let cities = oxquery("locations", "
+  PREFIX gn: <http://www.geonames.org/ontology#>
+  SELECT ?city ?population WHERE {
+    ?c gn:name ?city ; gn:population ?population
+  }
+  ORDER BY DESC(?population)
+")
+
+= Project Status
+
+#table(
+  columns: 3,
+  [*Project*], [*Status*], [*Lead*],
+  ..projects.map(p => (p.title, p.status, p.lead)).flatten()
+)
+
+= Cities
+
+#for city in cities [
+  - *#city.city*: #city.population inhabitants
+]
+
+= Store Management
+
+Available stores: #oxlist-stores().join(", ")
+
+Store sizes:
+- Projects: #oxstore-size("projects") triples
+- Locations: #oxstore-size("locations") triples
+```
+
+### Complete Demo
+
+See `demo-wasm.typ` for a complete working example demonstrating:
+- Loading Turtle data into the default "memory" store
+- Querying data with SPARQL
+- Using multiple named stores
+- Store management functions
+- Automatic JSON parsing and type conversion
+
+Compile the demo:
+```bash
+typst compile demo-wasm.typ demo-wasm.pdf
+```
+
+### WASM vs CLI Comparison
+
+| Feature | WASM Plugin | CLI Version |
+|---------|------------|-------------|
+| Installation | Build once, no runtime deps | Requires binary in PATH |
+| Data Loading | In-memory Turtle/N3 | File-based or HTTP endpoints |
+| Store Types | In-memory named stores | Persistent Oxigraph stores, HTTP endpoints |
+| Performance | Fast for small datasets | Optimized for large datasets |
+| SPARQL Support | SELECT queries | Full SPARQL 1.1 |
+| Use Case | Embedded data, simple queries | Production, complex queries, remote endpoints |
+| External Dependencies | None | Requires typox binary |
+
+### When to Use WASM Plugin
+
+✅ **Best for:**
+- Small to medium datasets that fit in memory
+- Self-contained documents with embedded RDF data
+- Rapid prototyping and testing
+- Tutorials and examples
+- Simple SPARQL SELECT queries
+
+❌ **Not ideal for:**
+- Large persistent RDF stores
+- Remote HTTP SPARQL endpoints
+- Complex SPARQL queries (CONSTRUCT, ASK, DESCRIBE)
+- Production workflows with external data sources
+
+For production use cases with large datasets or remote endpoints, use the CLI version.
 
 ## 📄 License
 
