@@ -1,13 +1,13 @@
-# Oxload - RDF/SPARQL Integration for Typst
+# Typox-RDF - RDF/SPARQL Integration for Typst
 
 **Seamlessly integrate RDF data into your Typst documents using SPARQL queries.**
 
-Oxload provides native RDF processing in Typst through a WebAssembly plugin powered by Oxigraph. Load Turtle/N3 data into in-memory stores and query them with SPARQL directly in your templates—no external tools required.
+Typox-RDF provides native RDF processing in Typst through a WebAssembly plugin powered by Oxigraph. Load Turtle/N3 data into in-memory stores and query them with SPARQL directly in your templates—no external tools required.
 
 ## Quick Start
 
 ```typst
-#import "@preview/oxload:0.1.0": load-turtle, query-memory
+#import "@preview/typox-rdf:0.1.0": load-turtle, query-memory
 
 // Load RDF data
 #load-turtle("
@@ -54,7 +54,7 @@ ex:bob foaf:name 'Bob Smith' ;
 Import the package in your Typst document:
 
 ```typst
-#import "@preview/oxload:0.1.0": load-turtle, query-memory, oxload-turtle, oxquery
+#import "@preview/typox-rdf:0.1.0": load-turtle, query-memory, oxload-turtle, oxquery
 ```
 
 ## API Reference
@@ -137,7 +137,7 @@ For simple use cases, these functions operate on the default "memory" store:
 ### Basic Usage
 
 ```typst
-#import "@preview/oxload:0.1.0": load-turtle, query-memory
+#import "@preview/typox-rdf:0.1.0": load-turtle, query-memory
 
 #load-turtle("
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
@@ -164,7 +164,7 @@ ex:bob foaf:name 'Bob' ; foaf:age 32 .
 ### Multiple Named Stores
 
 ```typst
-#import "@preview/oxload:0.1.0": oxload-turtle, oxquery
+#import "@preview/typox-rdf:0.1.0": oxload-turtle, oxquery
 
 // Load employee data
 #oxload-turtle("employees", "

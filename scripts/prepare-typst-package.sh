@@ -113,10 +113,13 @@ else
     check_fail "lib.typ missing"
 fi
 
-if [ -f "$PROJECT_ROOT/LICENSE" ]; then
-    check_pass "LICENSE exists in root"
+if [ -f "$PACKAGE_DIR/LICENSE" ]; then
+    check_pass "LICENSE exists in package"
 else
-    check_fail "LICENSE missing in project root"
+    check_fail "LICENSE missing in package directory"
+    if [ -f "$PROJECT_ROOT/LICENSE" ]; then
+        echo "  → Copy from root: cp LICENSE typst-package/"
+    fi
 fi
 
 echo ""

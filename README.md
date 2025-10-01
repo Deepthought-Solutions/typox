@@ -158,7 +158,7 @@ Copy the `typst-package` directory to your project and import:
 #### Method B: Package Manager (Future)
 
 ```typst
-#import "@preview/oxload:0.1.0": load-turtle, query-memory
+#import "@preview/typox-rdf:0.1.0": load-turtle, query-memory
 ```
 
 > **Note:** For package-specific documentation, see [typst-package/README.md](typst-package/README.md). The Typst package provides WASM plugin functions only—legacy CLI functions are not available when installed via the package manager.

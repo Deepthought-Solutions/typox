@@ -92,6 +92,7 @@ FILES_TO_COPY=(
     "typst.toml"
     "lib.typ"
     "typox.wasm"
+    "LICENSE"
 )
 
 for file in "${FILES_TO_COPY[@]}"; do
@@ -110,7 +111,7 @@ echo ""
 # Step 4: Validate structure
 echo -e "${BLUE}Step 3: Validating structure...${NC}"
 
-REQUIRED_FILES=("README.md" "typst.toml" "lib.typ")
+REQUIRED_FILES=("README.md" "typst.toml" "lib.typ" "LICENSE")
 ALL_PRESENT=true
 
 for file in "${REQUIRED_FILES[@]}"; do

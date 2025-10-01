@@ -2,14 +2,12 @@
 # Licensed under the MIT License - see LICENSE file for details
 
 [package]
-name = "oxload"
+name = "typox-rdf"
 version = "0.1.0"
 entrypoint = "lib.typ"
 authors = ["Typox Project Contributors"]
 license = "MIT"
-description = "Load RDF data from Oxigraph stores into Typst documents"
+description = "Query RDF data with SPARQL and load results."
 repository = "https://github.com/deepthought-solutions/typox"
 keywords = ["rdf", "sparql", "oxigraph", "data"]
-
-[tool.typst-ts]
-exclude = ["target/"]
+categories = ["integration", "model"]
