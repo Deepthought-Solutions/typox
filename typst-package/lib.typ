@@ -89,10 +89,24 @@
 #let clear-memory() = oxclear("memory")
 
 // =============================================================================
-// Legacy CLI Functions (Deprecated)
+// Legacy CLI Functions (OBSOLETE - For Local Development Only)
+// =============================================================================
+//
+// WARNING: These functions require the Typox CLI binary and will NOT work
+// when this package is installed via Typst's package manager.
+// They are preserved only for backwards compatibility in local development.
+//
+// For package users: Use the WASM plugin functions above (oxload-turtle, oxquery, etc.)
+// For CLI functionality: Install the Typox binary separately from:
+// https://github.com/deepthought-solutions/typox
+//
 // =============================================================================
 
 /// Load RDF data from an Oxigraph store or HTTP SPARQL endpoint using SPARQL queries
+///
+/// ⚠️ OBSOLETE: This function requires the Typox CLI binary and only works in local
+/// development environments. It will NOT work when installed via @preview/oxload.
+/// Use oxload-turtle() and oxquery() instead for package-based usage.
 ///
 /// This function executes a SPARQL query against either a local Oxigraph store or a remote
 /// HTTP SPARQL endpoint and returns the results directly in Typst.
@@ -177,6 +191,9 @@
 }
 
 /// Load RDF data from a pre-generated JSON file
+///
+/// ⚠️ OBSOLETE: This function is for use with the Typox CLI binary only.
+/// Use oxload-turtle() and oxquery() instead for package-based usage.
 ///
 /// This is a simpler alternative when you want to specify the exact file path.
 ///
