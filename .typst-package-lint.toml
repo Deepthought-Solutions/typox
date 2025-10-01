@@ -1,0 +1,21 @@
+[rules]
+# Enforce strict file inclusion
+allowed_extensions = [".typ", ".toml", ".md", ".wasm", ".png", ".jpg"]
+max_package_size_mb = 2
+max_file_size_kb = 500
+
+# Metadata validation
+require_homepage = false
+require_categories = true
+max_keywords = 5
+description_min_length = 40
+description_max_length = 60
+
+# Documentation requirements
+require_readme_examples = true
+require_license = true
+require_changelog = false
+
+# Naming conventions
+forbid_typst_in_name = true
+enforce_kebab_case = true

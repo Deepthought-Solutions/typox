@@ -1,0 +1,29 @@
+[package]
+name = "typox-rdf"
+version = "0.1.0"
+test_root = "tests/package"
+
+[settings]
+# Compilation settings
+compiler = "typst"
+timeout_seconds = 30
+parallel = true
+
+# Visual comparison
+compare_pdfs = true
+pixel_tolerance = 0.01
+compare_text = true
+
+# Test discovery
+test_pattern = "test_*.typ"
+exclude_patterns = ["expected/", "fixtures/"]
+
+[environment]
+# Set environment variables for tests
+TYPOX_TEST_MODE = "true"
+
+[reporting]
+format = "junit"
+output = "test-results/junit.xml"
+verbose = true
+show_diffs = true
